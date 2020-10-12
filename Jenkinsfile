@@ -1,22 +1,23 @@
-pipeline { 
-    options {
-        skipStagesAfterUnstable()
-    }
+pipeline {
+    agents any
+    
     stages {
-        stage('Build') { 
+        stage('Dev Env') { 
             steps { 
-                sh 'make' 
+                sh "echo dev" 
             }
         }
         stage('Test'){
             steps {
-                sh 'make check'
-                // junit 'reports/**/*.xml' 
+                sh "echo test"
+                timeout(time: 2, unit: 'DAYS'){
+                    input message: 'waiting for approval:'
+                }
             }
         }
-        stage('Deploy') {
+        stage('Prod') {
             steps {
-                sh 'make publish'
+                sh "echo deploy"
             }
         }
     }
